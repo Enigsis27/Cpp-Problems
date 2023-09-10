@@ -15,21 +15,32 @@ using namespace std;
 
 int main() {
 	
-	stack<char> st;
+	stack<char> st1;
+	stack<char> st2;
 	string s;
 
 	cin >> s;
+	
+	for(int i = 0; i < s.length(); ++i) {
 
-	st.push(s[0]);
+		if(s[i] == '[' || s[i] == '(' || s[i] == '{') st1.push(s[i]);
+		else if(s[i] == ']' || s[i] == ')' || s[i] == '}') st2.push(s[i]);
 
-	for(int i = 1; i < s.length(); ++i) {
-		if(s[i] == '[' || s[i] == '(' || s[i] == '{') st.push(s[i]);
-		if(st.empty()) continue;
-		else if(s[i] == ']' && st.top() == '[') st.pop();
-		else if(s[i] == ')' && st.top() == '(') st.pop();
-		else if(s[i] == '}' && st.top() == '{') st.pop();	
-	}
+		if(st1.empty() || st2.empty()) continue;
+		else if(st1.top() == '[' && st2.top() == ']') {
+			st1.pop();
+			st2.pop();
+		}
+		else if(st1.top() == '(' && st2.top() == ')') {
+			st1.pop();
+			st2.pop();
+		}
+		else if(st1.top() == '{' && st2.top() == '}') {
+			st1.pop();
+			st2.pop();
+		}	
+    }
 
-	cout <<(bool) st.empty() << "\n";
+	cout <<(st1.empty() && st2.empty()) << "\n";
 	return 0;
 }
